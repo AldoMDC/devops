@@ -3,30 +3,26 @@ from datetime import datetime
 
 APP_NOTIFICACAO = FastAPI()
 
+# Criar uma rota para receber tarefa finalizada
+# APP_NOTIFICACAO.post("/notificar")
+# Entrada:
+#   - Recebe título da tarefa e data de finalização da tarefa
+# Saída:
+#   - print no terminal
+
+NOTIFICACOES = []
+
+@APP_NOTIFICACAO.get("/notificar")
+def listar_notificacoes():
+    return NOTIFICACOES
 
 @APP_NOTIFICACAO.post("/notificar")
-def notificar_tarefa_finalizada(titulo: str, data_finalizacao: str):
-    """
-    Recebe o título da tarefa e a data de finalização
-    e imprime uma notificação no terminal.
-    """
-    try:
-        # Tenta formatar a data para validar
-        data_formatada = datetime.fromisoformat(data_finalizacao.replace("Z", "+00:00"))
-        data_legivel = data_formatada.strftime("%d/%m/%Y %H:%M:%S")
-    except:
-        data_legivel = data_finalizacao  # Se não conseguir formatar, usa como veio
+def notificar(titulo: str, data_finalizacao: datetime):
+    global NOTIFICACOES
+    
+    resultado = f"Tarefa '{titulo}' finalizada em {data_finalizacao}"
+    print(resultado)
 
-    print("=" * 50)
-    print("🔔 NOTIFICAÇÃO DE TAREFA FINALIZADA")
-    print("=" * 50)
-    print(f"Título da tarefa: {titulo}")
-    print(f"Finalizada em:   {data_legivel}")
-    print("=" * 50)
-    print()
+    NOTIFICACOES.append(resultado)
 
-    return {
-        "status": "notificação recebida",
-        "titulo": titulo,
-        "data_finalizacao": data_legivel
-    }
+    return {"status": "OK"}
