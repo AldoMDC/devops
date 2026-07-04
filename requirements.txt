@@ -4,9 +4,4 @@ httpx2
 pytest-cov
 bandit
 pylint
-
-# Etapas
-# 1. Linting
-# 2. Testes unitários
-# 3. Cobertura de código
-# 4. SAST (Bandit)
+requests
